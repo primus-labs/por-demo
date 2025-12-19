@@ -42,7 +42,7 @@ npm install
     (Refer to the [program README](../program/README.md) for compilation instructions.)
 
     ```sh
-    npx por-cli uploadProgram --filepath ../program/target/elf-compilation/riscv32im-succinct-zkvm-elf/release/zktls-program
+    npx por-cli uploadProgram --filepath ../program/target/elf-compilation/riscv32im-succinct-zkvm-elf/release/program
     ```
 
    After uploading, set the returned program ID as `PROGRAM_ID` in your `.env`.
