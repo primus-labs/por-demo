@@ -1,0 +1,7 @@
+services:
+  por-client-demo:
+    # build: .
+    image: primuslabs/por-client-demo:v0.1.0
+    container_name: por-client-demo
+    env_file: .env
+    restart: always
