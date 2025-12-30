@@ -19,7 +19,7 @@ use structs::{AttestationMetaStruct, PublicValuesStruct};
 const SPOT_BALANCE_URL: &str = "https://api.binance.com/api/v3/account";
 const SPOT_URL: &[&str] = &[SPOT_BALANCE_URL];
 const STABLE_COINS: &[&str] = &[
-    "USDT", "USDC", "FDUSD", "TUSD", "USDE", "XUSD", "USD1", "BFUSD", "USDP", "DAI",
+    "USDT", "USDC", "FDUSD", "TUSD", "USDE", "XUSD", "USD1", "BFUSD", "USDP", "DAI", "USDF",
 ];
 
 fn app_spot(
@@ -141,15 +141,17 @@ fn app_main(pv: &mut PublicValuesStruct) -> Result<(), ZktlsError> {
     pv.attestation_meta.push(spot_am);
 
     // Summary assets by Category
+    let mut binance_asset: HashMap<String, f64> = HashMap::new();
     let mut stablecoin_sum = 0.0;
     for (k, v) in asset_bals {
         if STABLE_COINS.contains(&k.as_str()) {
             stablecoin_sum += v;
         } else {
-            pv.asset_balance.insert(k, v);
+            binance_asset.insert(k, v);
         }
     }
-    pv.asset_balance.insert("STABLECOIN".to_string(), stablecoin_sum);
+    binance_asset.insert("STABLECOIN".to_string(), stablecoin_sum);
+    pv.asset_balance.insert("binance".to_string(), binance_asset);
 
     Ok(())
 }
