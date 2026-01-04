@@ -1,5 +1,8 @@
 import { DataSource, PoRClient, loadConfigFromFile } from "@primuslabs/por-client-sdk";
 
+const interval = 1800;
+console.log(`The interval: ${interval} s.`)
+
 async function main() {
   try {
     const config = loadConfigFromFile();
@@ -15,11 +18,15 @@ async function main() {
 
     const client = new PoRClient(config.app,);
     const result = await client.run(params);
-    console.log("result", JSON.stringify(result));
+    // console.log("result", JSON.stringify(result));
     console.log('proof fixture(json):', JSON.parse(result?.proof_fixture ?? "{}"));
   } catch (err: any) {
     console.log("err:", err?.message, JSON.stringify(err));
   }
+
+  console.log(`⏳ Next in ${interval} s...`);
 }
 
-main()
+main();
+setInterval(main, interval * 1000);
+
