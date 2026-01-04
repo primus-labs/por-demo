@@ -3,5 +3,6 @@ services:
     # build: .
     image: primuslabs/por-client-demo:v0.1.0
     container_name: por-client-demo
-    env_file: .env
+    volumes:
+      - ./.config.yml:/app/.config.yml:ro
     restart: always
