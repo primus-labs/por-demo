@@ -1,7 +1,4 @@
-import { DataSource, PoRClient, loadConfigFromFile } from "@primuslabs/por-client-sdk";
-
-const interval = 1800;
-console.log(`The interval: ${interval} s.`)
+import { Scheduler, DataSource, PoRClient, loadConfigFromFile } from "@primuslabs/por-client-sdk";
 
 async function main() {
   try {
@@ -16,17 +13,21 @@ async function main() {
       asterUsdSFuture: () => ds.aster?.getUsdSFutureBalanceRequests(),
     };
 
-    const client = new PoRClient(config.app,);
+    const client = new PoRClient(config.app);
     const result = await client.run(params);
     // console.log("result", JSON.stringify(result));
     console.log('proof fixture(json):', JSON.parse(result?.proof_fixture ?? "{}"));
   } catch (err: any) {
     console.log("err:", err?.message, JSON.stringify(err));
+    throw err;
   }
-
-  console.log(`⏳ Next in ${interval} s...`);
 }
 
-main();
-setInterval(main, interval * 1000);
-
+const scheduler = new Scheduler(main, {
+  intervalMs: 30 * 60 * 1000, // ms
+  shouldStop: (err) => {
+    if (err?.data?.code === "timeout") return true;
+    return false;
+  }
+});
+scheduler.start();
