@@ -36,6 +36,6 @@ A zero-knowledge proof is then generated to confirm that the publicly disclosed 
 
 Primus separates the PoR process across two cooperating components:
 
-* **[Client Program](./client/README.md)**: A configurable client-side program deployed in the institution’s environment, responsible for authenticated data retrieval, data verification, and periodic reserve proof execution based on off-chain asset verification requirements.
+* **[Client](./client/README.md)**: A configurable client-side program deployed in the institution’s environment, responsible for authenticated data retrieval, data verification, and periodic reserve proof execution based on off-chain asset verification requirements.
 
 * **[zkVM Program](./zkvm-program/README.md)**: A verifiable computation program that aggregates asset data according to different disclosure scopes and generates zero-knowledge proofs for the computed results.
