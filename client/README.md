@@ -30,7 +30,7 @@ Before activating the program, you need to configure:
    - Multiple off-chain data sources are supported
    - Each data source can have multiple read-only API keys
 2. **Authentication Parameters**
-   - Please configure the User Token and Project ID provided to you in the client program before running it.
+   - Please configure the **User Token** and **Project ID** provided to you in the client program before running it.
 
 
 ## How the Client Program Works
@@ -51,5 +51,5 @@ Once this process is complete, the verified off-chain reserve values are publicl
 
 ## Quick Start
 
-Get your client program running quickly by following our [Quick Start Guide]([./quick-start/README.md](https://github.com/primus-labs/por-demo/blob/main/client/quickstart.md)).
+Get your client program running quickly by following our [Quick Start Guide](https://github.com/primus-labs/por-demo/blob/main/client/quickstart.md).
 
