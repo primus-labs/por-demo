@@ -1,41 +1,75 @@
-## Technical Overview
+## Overview
 
-Primus enables off-chain reserve verification with end-to-end cryptographic guarantees by combining zkTLS, TEE, and zkVM-based verifiable computation on a decentralized proving network.
+We will build a customized PoR program based on your off-chain asset verification requirements. To get started, please complete this [Requirements Form](https://docs.google.com/forms/d/e/1FAIpQLSc9ijOzKQla4oOpSytvf4K3hjrfxAT-dGM0VUIFXAR94qn5Qw/viewform).
 
-1. **zkTLS for Authenticated Data Retrieval**
+After we receive your requirements, our team will contact you to confirm several key details and further refine the program design. 
 
-Institutions deploy a custom PoR program in their own environment, where zkTLS is used to retrieve real-time asset balances from off-chain sources.
+These details may include:
 
-zkTLS produces a proof that:
+- **Exact data source URLs and asset API endpoints**, which may involve multiple APIs corresponding to different asset accounts
+- **Asset disclosure scope**, defining the level of reserve detail that will be visible to your users
+- **Verification frequency**, specifying how often the client program executes the verification process
 
-- the data is fetched from the legitimate API endpoint
-- over a trusted TLS session
-- without exposing API credentials or raw account details
+The PoR program consists of two components: 
 
-This off-chain data source, along with the hashed asset details, is validated by Attestor nodes in the Primus Network and then propagated to the blockchain.
+1. [Client program](https://github.com/primus-labs/por-demo/tree/main/client)
 
-2. **TEE-Assisted Secure Data Processing**
+   - A configurable client-side program deployed in your own environment
+   - Responsible for authenticated data retrieval, data verification, and periodic reserve proof execution
 
-The retrieved off-chain data is additionally processed inside a Trusted Execution Environment (TEE), ensuring:
+2. [zkVM Program](https://github.com/primus-labs/por-demo/tree/main/zkvm-program)
 
-- data confidentiality throughout computation
-- secure communication to the decentralized proving network
+   - A verifiable computation program that works alongside the client-side program and runs on the zkVM network
+   - Aggregates asset data according to different disclosure scopes and generates zero-knowledge proofs for the computed results
 
-The TEE establishes a secure channel to the verifiable computation backend.
+   
 
-3. **zkVM for Verifiable Aggregation of Reserves**
+## What we Deliver to You
 
-Through the TEE, the committed data is sent to a zkVM network (e.g., powered by Succinct or other partners), where the PoR program performs:
+Once the customized PoR program is built, we will deliver the following components:
 
-- grouping by token/asset type
-- aggregation of balances into a unified reserve value, which could be disclosed to the public
+1. **Client program**
 
-A zero-knowledge proof is then generated to confirm that the publicly disclosed reserve value is correctly computed from authentic, privately held balances — without revealing any sensitive account-level data.
+   - Distributed via npm, with optional Docker-based deployment support
 
-## How We Achieve This
+2. **Authentication parameters**, including:
 
-Primus separates the PoR process across two cooperating components:
+   - **User Token**: Identifies your organization on the Primus side (one client corresponds to one user token)
+   - **Project ID**: Used to associate each off-chain reserves program with its corresponding public explorer page
 
-* **[Client](./client/README.md)**: A configurable client-side program deployed in the institution’s environment, responsible for authenticated data retrieval, data verification, and periodic reserve proof execution based on off-chain asset verification requirements.
+   
 
-* **[zkVM Program](./zkvm-program/README.md)**: A verifiable computation program that aggregates asset data according to different disclosure scopes and generates zero-knowledge proofs for the computed results.
+## What You Need to Configure
+
+The client program is deployed **exclusively on your own server**, ensuring that you retain full control over all private credentials.
+
+Before activating the program, you need to configure:
+
+1. **Read-Only API Keys** for accessing your off-chain asset data
+
+   - Multiple off-chain data sources are supported
+   - Each data source can have multiple read-only API keys
+
+2. **Authentication Parameters**
+
+   - Configure the provided 'User Token' and 'Project ID' in the client program before running it
+
+   
+
+## How the PoR Program Works
+
+Once the read-only API keys are configured, the client program is ready to run. After being started, it periodically completes off-chain reserve proofs according to the predefined execution cycle.
+
+The client program execution flow is as follows:
+
+1. Initiate a zkTLS attestation process to retrieve real-time asset balances from legitimate off-chain data source API endpoints.
+2. Validate the off-chain data source and hashed asset details through Attestor nodes in the Primus Network, and propagate the validated data to the blockchain.
+3. Submit the retrieved data to a verifiable computation backend (the zkVM network) via a TEE-assisted secure data processing channel.
+
+The zkVM program then continues with the following steps:
+
+4. Process asset data inside the zkVM according to the defined business logic, such as grouping assets by type or aggregating balances into a single reserve value.
+5. Generate a zero-knowledge proof for the computed result.
+6. Return the generated proofs and verified results to the client program.
+
+Once these processes are complete, the verified off-chain reserve values are publicly disclosed on the explorer page.
