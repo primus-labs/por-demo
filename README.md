@@ -12,7 +12,7 @@ These details may include:
 
 The PoR program consists of two components: 
 
-1. [Client program](https://github.com/primus-labs/por-demo/tree/main/client)
+1. [Client Program](https://github.com/primus-labs/por-demo/tree/main/client)
 
    - A configurable client-side program deployed in your own environment
    - Responsible for authenticated data retrieval, data verification, and periodic reserve proof execution
