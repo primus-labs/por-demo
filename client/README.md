@@ -10,13 +10,12 @@ Details may include:
 - **Asset disclosure scope**, defining the level of reserve detail that will be visible to your users
 - **Verification frequency**, specifying how often the client program executes the verification process
 
-## What we Deliver
+## What We Deliver
 
 Once the customized program is built, we will deliver the following components:
 
 1. **Client-side program**
-   - Distributed via the npm repository
-   - Docker-based deployment is also supported if required
+   - Distributed via the docker-based deployment
 2. **Authentication parameters**, including:
    - **User Token**: Identifies your organization on the Primus side (one client corresponds to one user token)
    - **Project ID**: Used to associate each off-chain reserves program with its corresponding public explorer page
@@ -44,7 +43,7 @@ The execution flow is as follows:
 
 These steps constitute the complete execution flow of the client program.
 
-Within the zkVM network, asset data is processed according to the defined business logic, such as grouping by asset type or aggregating balances into a single reserve value. A zero-knowledge proof is then produced for the computed result.
+Within the zkVM network, asset data is processed according to the defined business logic, such as grouping by asset type or aggregating balances into a single reserve value. A zero-knowledge proof is then produced for the computed result. 
 
 Once this process is complete, the verified off-chain reserve values are publicly disclosed on the explorer page.
 
