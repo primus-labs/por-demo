@@ -20,16 +20,18 @@ Once the customized program is built, we will deliver the following components:
    - **User Token**: Identifies your organization on the Primus side (one client corresponds to one user token)
    - **Project ID**: Used to associate each off-chain reserves program with its corresponding public explorer page
 
-All authentication parameters are **pre-configured** within the delivered program. No additional setup is required on your side.
-
 ## What You Need to Configure
 
 The client program is deployed **exclusively on your own server**, ensuring that you retain full control over all private credentials.
 
-Before activating the program, you need to configure **read-only API keys** for accessing your off-chain asset data.
+Before activating the program, you need to configure:
 
-- Multiple off-chain data sources are supported
-- Each data source may have multiple read-only API keys
+1. **Read-Only API Keys** for accessing your off-chain asset data
+   - Multiple off-chain data sources are supported
+   - Each data source can have multiple read-only API keys
+2. **Authentication Parameters**
+   - Please configure the User Token and Project ID provided to you in the client program before running it.
+
 
 ## How the Client Program Works
 
@@ -46,4 +48,8 @@ These steps constitute the complete execution flow of the client program.
 Within the zkVM network, asset data is processed according to the defined business logic, such as grouping by asset type or aggregating balances into a single reserve value. A zero-knowledge proof is then produced for the computed result. You may refer to the [zkVM Program](https://github.com/primus-labs/por-demo/tree/main/zkvm-program) for more details.
 
 Once this process is complete, the verified off-chain reserve values are publicly disclosed on the explorer page.
+
+## Quick Start
+
+Get your client program running quickly by following our [Quick Start Guide]([./quick-start/README.md](https://github.com/primus-labs/por-demo/blob/main/client/quickstart.md)).
 
