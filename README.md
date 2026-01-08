@@ -1,49 +1,11 @@
-# por-client-demo
-
-PoR Client Demo for test.
-
 ## Overview
 
 This project verifies asset balances across multiple exchanges and account types, with support for **simultaneous zero-knowledge proofs over multiple accounts**.
 
 It is composed of two main components:
 
-* **[Client](./client/README.md)**: Provides user-facing functionality to configure exchanges, generate zkTLS attestations, submit tasks, and retrieve proof results.
+* **[Client Program](./client/README.md)**: Provides user-facing functionality to configure exchanges, generate zkTLS attestations, submit tasks, and retrieve proof results.
 
-* **[Program](./program/README.md)**: User-defined business logic compiled and executed inside a **zkVM** running within a **TEE**, responsible for verification, asset aggregation, and proof generation.
+* **[zkVM Program](./program/README.md)**: User-defined business logic compiled and executed inside a **zkVM** running within a **TEE**, responsible for verification, asset aggregation, and proof generation.
 
 Together, these components enable privacy-preserving verification of exchange account balances using **zkTLS**, **TEE**, and **zero-knowledge proofs**.
-
-
-## Supported Exchanges and Account Types
-
-The system currently supports the following exchanges and account categories:
-
-### Binance
-
-* **Unified Account**
-  `https://papi.binance.com/papi/v1/balance`
-* **Spot Account**
-  `https://api.binance.com/api/v3/account`
-* **Futures Account (USDⓈ-M)**
-  `https://fapi.binance.com/fapi/v3/balance`
-
-### Aster
-
-* **Spot Account**
-  `https://sapi.asterdex.com/api/v1/account`
-* **Futures Account**
-  `https://fapi.asterdex.com/fapi/v2/balance`
-
-
-## Workflow
-
-1. Generate zkTLS **attestations** for exchange account data via the **Primus Network**.
-2. Submit the attestations to a **zkVM program** running inside a **TEE**.
-3. Execute verification and business logic inside the zkVM (e.g. validate attestations, extract balances, aggregate assets).
-4. Generate zero-knowledge proofs using the **Succinct Network**.
-5. Return proofs and verified results to the client.
-
-
-For a complete conceptual introduction, see **[DVC-Intro](https://github.com/primus-labs/DVC-Intro)**.
-
