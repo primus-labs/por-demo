@@ -43,7 +43,7 @@ The execution flow is as follows:
 
 These steps constitute the complete execution flow of the client program.
 
-Within the zkVM network, asset data is processed according to the defined business logic, such as grouping by asset type or aggregating balances into a single reserve value. A zero-knowledge proof is then produced for the computed result. 
+Within the zkVM network, asset data is processed according to the defined business logic, such as grouping by asset type or aggregating balances into a single reserve value. A zero-knowledge proof is then produced for the computed result. You may refer to the [zkVM Program](https://github.com/primus-labs/por-demo/tree/main/zkvm-program) for more details.
 
 Once this process is complete, the verified off-chain reserve values are publicly disclosed on the explorer page.
 
