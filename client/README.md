@@ -1,5 +1,3 @@
-# Client Program
-
 ## Quick Start
 
 ### 1. Copy the configuration file
