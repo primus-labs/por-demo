@@ -21,7 +21,7 @@ The PoR program consists of two components:
 
    - A verifiable computation program that works alongside the client-side program and runs on the zkVM network
    - Aggregates asset data according to different disclosure scopes and generates zero-knowledge proofs for the computed results
-
+   - **Fully deployed, operated, and maintained by Primus. No user action or setup is required.**
    
 
 ## What we Deliver to You
@@ -30,7 +30,7 @@ Once the customized PoR program is built, we will deliver the following componen
 
 1. **Client program**
 
-   - Distributed via npm, with optional Docker-based deployment support
+   - Distributed as a Docker-based deployment
 
 2. **Authentication parameters**, including:
 
