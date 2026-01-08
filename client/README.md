@@ -1,187 +1,50 @@
-
 ## Overview
 
-Here provides a client that interacts with Primus Network and zkVM program. Docker builds are also supported for deployment.
+We will build a customized PoR client program based on your off-chain asset verification requirements. To get started, please complete this [Requirements Form](https://docs.google.com/forms/d/e/1FAIpQLSc9ijOzKQla4oOpSytvf4K3hjrfxAT-dGM0VUIFXAR94qn5Qw/viewform).
 
-## Build
+After we receive your requirements, our team will contact you to confirm several key details and further refine the program design. 
 
-```sh
-npm install
-```
+Details may include:
 
-## Quick Start
+- **Exact data source URLs and asset API endpoints**, which may involve multiple APIs corresponding to different asset accounts
+- **Asset disclosure scope**, defining the level of reserve detail that will be visible to your users
+- **Verification frequency**, specifying how often the client program executes the verification process
 
-### 1. Copy the configuration file
+## What we Deliver
 
-Copy the example configuration file and rename it to `.config.yml`:
+Once the customized program is built, we will deliver the following components:
 
-```sh
-cp .config.example.yml .config.yml
-```
+1. **Client-side program**
+   - Distributed via the npm repository
+   - Docker-based deployment is also supported if required
+2. **Authentication parameters**, including:
+   - **User Token**: Identifies your organization on the Primus side (one client corresponds to one user token)
+   - **Project ID**: Used to associate each off-chain reserves program with its corresponding public explorer page
 
-### 2. Set authentication parameters
+All authentication parameters are **pre-configured** within the delivered program. No additional setup is required on your side.
 
-Contact **Primus Labs** to obtain your:
+## What You Need to Configure
 
-* `token`
-* `projectId`
-* `programId`
+The client program is deployed **exclusively on your own server**, ensuring that you retain full control over all private credentials.
 
-Then configure them under `app.identity` in `.config.yml`:
+Before activating the program, you need to configure **read-only API keys** for accessing your off-chain asset data.
 
-```yml
-app:
-  identity:
-    token: "<YOUR_TOKEN>"
-    projectId: "<YOUR_PROJECT_ID>"
-    programId: "<YOUR_PROGRAM_ID>"
-```
+- Multiple off-chain data sources are supported
+- Each data source may have multiple read-only API keys
 
-### 3. Configure exchange API keys
+## How the Client Program Works
 
-Configure one or more API key pairs for the supported exchanges.
-At least **one exchange** must be configured, and you may configure **multiple exchanges** simultaneously.
+Once the read-only API keys are configured, the client program is ready to run. After being started, it periodically completes off-chain reserve proofs according to the predefined execution cycle.
 
-Example (Binance):
+The execution flow is as follows:
 
-```yml
-exchanges: # at least one of: binance, aster
-  binance:
-    - apiKey: "binance-key-123"
-      apiSecret: "binance-secret-abc"
-      kind: ["spot", "usds-futures"]
-```
+1. **Initiate a zkTLS attestation process** to retrieve real-time asset balances from legitimate off-chain data source API endpoints.
+2. **Validate the off-chain data source and hashed asset details** through Attestor nodes in the Primus Network, and propagate the validated data to the blockchain.
+3. **Submit the retrieved data** to a verifiable computation backend (the zkVM network) via a TEE-assisted secure data processing channel.
 
-### 4. Configure blockchain settings (optional)
+These steps constitute the complete execution flow of the client program.
 
+Within the zkVM network, asset data is processed according to the defined business logic, such as grouping by asset type or aggregating balances into a single reserve value. A zero-knowledge proof is then produced for the computed result.
 
-Adjust the blockchain network via `app.blockchain.network`. The default network is **Base Mainnet (`base`)**.
-
-You may also specify a custom RPC endpoint using `app.blockchain.rpcUrl`.
-
-| CHAIN_ID | RPC URL                  | Network      |
-| -------: | ------------------------ | ------------ |
-|     8453 | https://mainnet.base.org | Base Mainnet |
-|    84532 | https://sepolia.base.org | Base Sepolia |
-
-Example:
-
-```yml
-app:
-  blockchain:
-    network: base-sepolia
-    rpcUrl: https://sepolia.base.org
-```
-
-### 5. Configure private key (optional)
-
-If the subscription type of the `projectId` is **`PLAN_SELF_PAID`**, you must configure a signer private key:
-
-```yml
-app:
-  blockchain:
-    signer:
-      privateKey: "<PRIVATE_KEY>"
-```
-
-
-### 6. Run the client
-
-Start the client using Docker Compose:
-
-```sh
-docker compose up
-```
-
-**Notes**: If you update the configuration (for example, adding, modifying, or removing API key pairs), simply edit `.config.yml`. The changes will automatically take effect **in the next execution loop**, without restarting the container.
-
-
-## Configuration
-
-Also see por-client-sdk.
-
-### Structure Overview
-
-```yaml
-app:               # Core application configuration
-  identity:        # Application identity and authorization info
-  runtime:         # Runtime environment configuration
-  services:        # External service endpoints
-  blockchain:      # Blockchain connection and signer info
-
-exchanges:         # Exchange account configurations
-  binance:         # Binance exchange accounts
-  aster:           # Aster exchange accounts
-```
-
-
-### Application Configuration (`app`)
-
-#### 1. Identity (`app.identity`)
-
-Contains application authorization and identification.
-
-| Field     | Type   | Description                                      | Example           |
-| --------- | ------ | ------------------------------------------------ | ----------------- |
-| token     | string | Authentication token issued for this application | `"my-auth-token"` |
-| projectId | string | Unique project identifier                        | `"project-123"`   |
-| programId | string | Unique program identifier                        | `"program-abc"`   |
-
-#### 2. Runtime (`app.runtime`)
-
-Specifies the runtime environment and logging.
-
-| Field      | Type    | Default        | Description                                            | Example        |
-| ---------- | ------- | -------------- | ------------------------------------------------------ | -------------- |
-| version    | string  | -              | Application version in semantic version format (x.y.z) | `"1.0.0"`      |
-| env        | string  | `"production"` | Runtime environment (`development` or `production`)    | `"production"` |
-| logVerbose | integer | `0`            | Log verbosity (0 = off, higher = more detail)          | `3`            |
-
-#### 3. Services (`app.services`)
-
-External service endpoints used by the application.
-
-##### zkVM Service (`app.services.zkvm`)
-
-| Field | Type   | Description               | Example                      |
-| ----- | ------ | ------------------------- | ---------------------------- |
-| url   | string | zkVM service endpoint URL | `"https://zkvm.example.com"` |
-
-##### Data Service (`app.services.data`)
-
-| Field | Type   | Description               | Example                      |
-| ----- | ------ | ------------------------- | ---------------------------- |
-| url   | string | Data service endpoint URL | `"https://data.example.com"` |
-
-#### 4. Blockchain (`app.blockchain`)
-
-Blockchain connection and signer configuration.
-
-| Field   | Type   | Default  | Description                                                                  | Example                     |
-| ------- | ------ | -------- | ---------------------------------------------------------------------------- | --------------------------- |
-| network | string | `"base"` | Target blockchain network (`base` or `base-sepolia`)                         | `"base-sepolia"`            |
-| rpcUrl  | string | -        | Optional custom RPC URL. If not set, default RPC for the network is used     | `"https://rpc.example.com"` |
-| signer  | object | -        | Transaction signer info (required if `subscriptionType` is `PLAN_SELF_PAID`) | -                           |
-
-##### Signer (`app.blockchain.signer`)
-
-| Field      | Type   | Description                                 | Example            |
-| ---------- | ------ | ------------------------------------------- | ------------------ |
-| privateKey | string | Private key to sign blockchain transactions | `"0xabcdef123..."` |
-
----
-
-### Exchange Accounts (`exchanges`)
-
-Supports multiple exchange accounts. At least one exchange is required. Now only support Binance and Aster.
-
-#### Fields of `exchange`
-
-| Field       | Type    | Description                                    | Example                     |
-| ----------- | ------- | ---------------------------------------------- | --------------------------- |
-| apiKey      | string  | API key used to authenticate with Binance      | `"binance-key-123"`         |
-| apiSecret   | string  | API secret corresponding to the API key        | `"binance-secret-abc"`      |
-| enabled     | boolean | Whether this account is active (default: true) | `true`                      |
-| description | string  | Optional description for this account          | `"My Binance spot account"` |
-| kind        | array   | Supported Binance account types                | `["spot","usds-futures"]`   |
+Once this process is complete, the verified off-chain reserve values are publicly disclosed on the explorer page.
 
