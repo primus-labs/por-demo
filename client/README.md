@@ -31,7 +31,7 @@ Configure one or more API key pairs for the supported data source. At least **on
 Example (Binance):
 
 ```
-exchanges:
+datasource:
   binance:
     - apiKey: "binance-key-123"
       apiSecret: "binance-secret-abc"
@@ -47,4 +47,3 @@ docker compose up
 ```
 
 **Notes**: If you update the configuration (for example, adding, modifying, or removing API key pairs), simply edit `.config.yml`. The changes will automatically take effect **in the next execution loop**, without restarting the container.
-
