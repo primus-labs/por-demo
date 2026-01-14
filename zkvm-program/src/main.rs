@@ -615,7 +615,7 @@ fn app_aster(
         app_aster_spot(&mut spot_am, &spot_data, attestation_config, &mut asset_bals)?;
         pv.attestation_meta.push(spot_am);
     }
-    if let Some(future_data) = attestations.get("asterFuture") {
+    if let Some(future_data) = attestations.get("asterUsdSFuture") {
         let mut future_am = AttestationMetaStruct::default();
         app_aster_future(&mut future_am, &future_data, attestation_config, &mut asset_bals)?;
         pv.attestation_meta.push(future_am);
@@ -673,8 +673,8 @@ fn app_main(pv: &mut PublicValuesStruct) -> Result<(), ZktlsError> {
 
 pub fn main() {
     let mut pv = PublicValuesStruct::default();
-    pv.kind = "asset-balance".to_string();
     pv.version = "0.1.0".to_string();
+    pv.kind = "asset-balance".to_string();
     if let Err(e) = app_main(&mut pv) {
         println!("Error: {} {}", e.icode(), e.msg());
         pv.status = e.icode();
