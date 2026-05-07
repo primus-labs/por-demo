@@ -24,7 +24,7 @@ The PoR program consists of two components:
    - **Fully deployed, operated, and maintained by Primus. No action or configuration is required on your side.**
    
 
-## What we Deliver to You
+## What We Deliver to You
 
 Once the customized PoR program is built, we will deliver the following components:
 
