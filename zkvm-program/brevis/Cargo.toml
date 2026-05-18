@@ -1,0 +1,9 @@
+[package]
+version = "0.1.0"
+name = "program"
+edition = "2024"
+
+[dependencies]
+pico-sdk = { git = "https://github.com/brevis-network/pico.git", tag = "v1.2.2" }
+common = { path = "../common" }
+bincode = "1.3"

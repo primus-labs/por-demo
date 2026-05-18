@@ -17,7 +17,7 @@ async function main() {
       asterUsdSFuture: () => ds.aster?.getUsdSFutureBalanceRequests(),
     };
 
-    const result = await client.run(params);
+    const result = await client.run(params, { projectName: "demo" });
     // console.log("result", JSON.stringify(result));
     console.log('proof fixture(json):', JSON.parse(result?.proof_fixture ?? "{}"));
   } catch (err: any) {
@@ -39,7 +39,7 @@ async function main() {
 
 const scheduler = new Scheduler(main, {
   intervalMs: config.app.runtime.jobInterval * 1000, // ms
-  stateFile: ".state.json",
+  stateFile: "/app/.state.json",
   shouldStop: (err) => {
     if (err?.data?.code === "timeout") return true;
     return false;
