@@ -4,12 +4,10 @@
   "definitions": {
     "apiKey": {
       "type": "string",
-      "minLength": 1,
       "description": "API key used to authenticate with the exchange"
     },
     "apiSecret": {
       "type": "string",
-      "minLength": 1,
       "description": "API secret corresponding to the API key"
     },
     "enabled": {
@@ -32,7 +30,9 @@
           "spot",
           "usds-futures",
           "coin-futures",
-          "unified"
+          "unified",
+          "margin",
+          "funding"
         ]
       }
     },
@@ -47,6 +47,21 @@
           "usds-futures"
         ]
       }
+    },
+    "generalKind": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Account types for this key",
+      "items": {
+        "enum": [
+          "main"
+        ]
+      }
+    },
+    "general": {
+      "type": "string",
+      "default": ""
     }
   },
   "type": "object",
@@ -147,6 +162,12 @@
                   "type": "string",
                   "format": "uri",
                   "description": "zkVM service endpoint URL"
+                },
+                "getProofResultTimeout": {
+                  "type": "integer",
+                  "default": 2400,
+                  "minimum": 10,
+                  "description": "Get zkVM Proof result timeout in seconds (default 2400)"
                 }
               }
             },
@@ -173,14 +194,16 @@
           "additionalProperties": false,
           "required": [
             // "signer",
-            "network"
+            // "network"
           ],
           "properties": {
             "network": {
               "type": "string",
               "enum": [
                 "base",
-                "base-sepolia"
+                "base-sepolia",
+                "bsc-mainnet",
+                "bsc-testnet"
               ],
               "default": "base",
               "description": "Target blockchain network"
@@ -270,6 +293,266 @@
               },
               "kind": {
                 "$ref": "#/definitions/asterKind"
+              }
+            }
+          }
+        },
+        "grvt": {
+          "type": "array",
+          "description": "Grvt exchange account keys",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "apiKey",
+              "apiSecret"
+            ],
+            "properties": {
+              "apiKey": {
+                "$ref": "#/definitions/apiKey"
+              },
+              "apiSecret": {
+                "$ref": "#/definitions/apiSecret"
+              },
+              "enabled": {
+                "$ref": "#/definitions/enabled"
+              },
+              "description": {
+                "$ref": "#/definitions/description"
+              },
+              "kind": {
+                "$ref": "#/definitions/generalKind"
+              },
+              "subAccountId": {
+                "$ref": "#/definitions/general"
+              },
+              "vaultId": {
+                "$ref": "#/definitions/general"
+              }
+            }
+          }
+        },
+        "bybit": {
+          "type": "array",
+          "description": "Bybit exchange account keys",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "apiKey",
+              "apiSecret"
+            ],
+            "properties": {
+              "apiKey": {
+                "$ref": "#/definitions/apiKey"
+              },
+              "apiSecret": {
+                "$ref": "#/definitions/apiSecret"
+              },
+              "enabled": {
+                "$ref": "#/definitions/enabled"
+              },
+              "description": {
+                "$ref": "#/definitions/description"
+              },
+              "kind": {
+                "$ref": "#/definitions/generalKind"
+              }
+            }
+          }
+        },
+        "moomoo": {
+          "type": "array",
+          "description": "moomoo",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "requestFile"
+            ],
+            "properties": {
+              "enabled": {
+                "$ref": "#/definitions/enabled"
+              },
+              "description": {
+                "$ref": "#/definitions/description"
+              },
+              "kind": {
+                "$ref": "#/definitions/generalKind"
+              },
+              "requestFile": {
+                "$ref": "#/definitions/general"
+              }
+            }
+          }
+        },
+        "okx": {
+          "type": "array",
+          "description": "Okx exchange account keys",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "apiKey",
+              "apiSecret"
+            ],
+            "properties": {
+              "apiKey": {
+                "$ref": "#/definitions/apiKey"
+              },
+              "apiSecret": {
+                "$ref": "#/definitions/apiSecret"
+              },
+              "enabled": {
+                "$ref": "#/definitions/enabled"
+              },
+              "description": {
+                "$ref": "#/definitions/description"
+              },
+              "kind": {
+                "$ref": "#/definitions/generalKind"
+              },
+              "passphrase": {
+                "$ref": "#/definitions/general"
+              }
+            }
+          }
+        },
+        "hyperliquid": {
+          "type": "array",
+          "description": "Hyperliquid exchange account keys",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "apiKey",
+              "apiSecret"
+            ],
+            "properties": {
+              "apiKey": {
+                "$ref": "#/definitions/apiKey"
+              },
+              "apiSecret": {
+                "$ref": "#/definitions/apiSecret"
+              },
+              "enabled": {
+                "$ref": "#/definitions/enabled"
+              },
+              "description": {
+                "$ref": "#/definitions/description"
+              },
+              "kind": {
+                "$ref": "#/definitions/generalKind"
+              },
+              "address": {
+                "$ref": "#/definitions/general"
+              }
+            }
+          }
+        },
+        "pacifica": {
+          "type": "array",
+          "description": "Pacifica exchange account keys",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "apiKey",
+              "apiSecret"
+            ],
+            "properties": {
+              "apiKey": {
+                "$ref": "#/definitions/apiKey"
+              },
+              "apiSecret": {
+                "$ref": "#/definitions/apiSecret"
+              },
+              "enabled": {
+                "$ref": "#/definitions/enabled"
+              },
+              "description": {
+                "$ref": "#/definitions/description"
+              },
+              "kind": {
+                "$ref": "#/definitions/generalKind"
+              },
+              "address": {
+                "$ref": "#/definitions/general"
+              }
+            }
+          }
+        },
+        "extended": {
+          "type": "array",
+          "description": "Extended exchange account keys",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "apiKey",
+              "apiSecret"
+            ],
+            "properties": {
+              "apiKey": {
+                "$ref": "#/definitions/apiKey"
+              },
+              "apiSecret": {
+                "$ref": "#/definitions/apiSecret"
+              },
+              "enabled": {
+                "$ref": "#/definitions/enabled"
+              },
+              "description": {
+                "$ref": "#/definitions/description"
+              },
+              "kind": {
+                "$ref": "#/definitions/generalKind"
+              },
+              "address": {
+                "$ref": "#/definitions/general"
+              }
+            }
+          }
+        },
+        "lighter": {
+          "type": "array",
+          "description": "Lighter exchange account keys",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "apiKey",
+              "apiSecret"
+            ],
+            "properties": {
+              "apiKey": {
+                "$ref": "#/definitions/apiKey"
+              },
+              "apiSecret": {
+                "$ref": "#/definitions/apiSecret"
+              },
+              "enabled": {
+                "$ref": "#/definitions/enabled"
+              },
+              "description": {
+                "$ref": "#/definitions/description"
+              },
+              "kind": {
+                "$ref": "#/definitions/generalKind"
+              },
+              "accountIndex": {
+                "$ref": "#/definitions/general"
+              },
+              "poolIndex": {
+                "$ref": "#/definitions/general"
               }
             }
           }

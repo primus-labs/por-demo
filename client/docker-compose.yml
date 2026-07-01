@@ -5,4 +5,6 @@ services:
     container_name: por-client-demo
     volumes:
       - ./.config.yml:/app/.config.yml:ro
+      - ./request_data:/app/request_data
+      - ./.cache:/app/.cache
     restart: always
